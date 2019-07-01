@@ -3,8 +3,8 @@ class PlacesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    #### to display the markers on the map for thoses with address
     @match_places = Place.where.not(latitude: nil, longitude: nil)
+    @services = Service.all
 
     @markers = @match_places.map do |place|
       {
@@ -14,7 +14,6 @@ class PlacesController < ApplicationController
         infoWindow: render_to_string(partial: "infowindow", locals: { place: place })
       }
     end
-    ### end markers
   end
 
   def show

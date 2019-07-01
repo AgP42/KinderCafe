@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="pt-5 text-center">Search for kind-friendly places around you!</h1>
+  <h2 class="pt-5 text-center">Search for kind-friendly places around you!</h2>
 
   <div class="container my-3 ">
     <%= form_tag places_path, method: :get do %>
@@ -11,7 +11,7 @@
               params[:addr],
               class: "form-control",
               id: "address",
-              style: "height: 48px; width: 400px;",
+              style: "height: 48px; width: 300px;",
               placeholder: "Address"
             %>
           </div>
@@ -24,6 +24,21 @@
         </div>
       </div>
     <% end %>
+
+    <p>What are you looking for :</p>
+      <% @services.each do |service| %>
+<!--         <label class="switch">
+          <input type="checkbox" class="form-check-input">
+          <span class="slider round"></span>
+        </label> -->
+          <%= check_box_tag service.id %>
+          <%= h service.name -%>
+      <% end %>
+
+
+    <!-- <form> -->
+    <!-- </form> -->
+
   </div>
 
 </div>
