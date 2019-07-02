@@ -31,8 +31,17 @@
           <input type="checkbox" class="form-check-input">
           <span class="slider round"></span>
         </label> -->
-          <%= check_box_tag service.id %>
+
+          <%#= check_box_tag service.id %>
+
+          <%= check_box_tag("service_id[#{service.id}]",
+                       value = service.id,
+                       checked = false,
+                       # { disabled: false,
+                       #   onchange: "checkbox_services(this)" }
+                         ) %>
           <%= h service.name -%>
+
       <% end %>
 
 
@@ -50,3 +59,22 @@
   data-markers="<%= @markers.to_json %>"
   data-mapbox-api-key="<%= ENV['MAPBOX_API_KEY'] %>"
 ></div>
+
+<!-- <script>
+
+  const checkbox_services = (checkbox) => {
+
+    // const mapElement = document.getElementById('map');
+    document.getElementById("map").reload(true);
+
+    if(checkbox.checked) {
+        // Checkbox is checked..
+        console.log(checkbox.value + " checked");
+    } else {
+        // Checkbox is not checked..
+        console.log(checkbox.value + " not checked");
+    }
+
+  };
+
+</script> -->

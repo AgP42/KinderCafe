@@ -10,6 +10,7 @@ class PlacesController < ApplicationController
       {
         lat: place.latitude,
         lng: place.longitude,
+        services: place.services,
         # to make that work : create a _infowindow partial into views/places !!!
         infoWindow: render_to_string(partial: "infowindow", locals: { place: place })
       }

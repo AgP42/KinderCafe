@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 
 const mapElement = document.getElementById('map');
+const markers = JSON.parse(mapElement.dataset.markers);
 
 const buildMap = () => {
   mapboxgl.accessToken = mapElement.dataset.mapboxApiKey;
@@ -32,10 +33,35 @@ const fitMapToMarkers = (map, markers) => {
 const initMapbox = () => {
   if (mapElement) {
     const map = buildMap();
-    const markers = JSON.parse(mapElement.dataset.markers);
     addMarkersToMap(map, markers);
     fitMapToMarkers(map, markers);
   }
+  initCheckboxes();
+};
+
+const initCheckboxes = () => {
+  const checkbox = document.getElementById('service_id_9');
+
+   // checkbox.addEventListener("change", console.log("hello"))
+
+  checkbox.onchange = (event) => {
+
+    const checkbox_checked = event.target.checked;
+
+    // console.log(event.target)
+    // console.log(event.target.checked)
+
+    if (checkbox_checked) {
+      console.log(event.target.value + " checked");
+      console.log(markers);
+      const new_marker = [markers[0], markers[5]];
+      const map = buildMap();
+      addMarkersToMap(map, new_marker);
+      fitMapToMarkers(map, new_marker);
+    }
+
+
+  };
 };
 
 export { initMapbox };
