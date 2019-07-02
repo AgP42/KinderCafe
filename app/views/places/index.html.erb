@@ -1,5 +1,5 @@
 <div class="container">
-  <h2 class="pt-5 text-center">Search for kind-friendly places around you!</h2>
+  <h2 class="pt-5 text-center">Search for babies-friendly places around you!</h2>
 
   <div class="container my-3 ">
     <%= form_tag places_path, method: :get do %>
@@ -12,7 +12,7 @@
               class: "form-control",
               id: "address",
               style: "height: 48px; width: 300px;",
-              placeholder: "Address"
+              placeholder: @addr_name
             %>
           </div>
         </div>
@@ -37,16 +37,10 @@
           <%= check_box_tag(service.name,
                        value = service.id,
                        checked = false,
-                       # { disabled: false,
-                       #   onchange: "checkbox_services(this)" }
-                         ) %>
+                       ) %>
           <%= h service.name -%>
 
       <% end %>
-
-
-    <!-- <form> -->
-    <!-- </form> -->
 
   </div>
 
@@ -57,24 +51,6 @@
   style="width: 100%;
   height: 550px;"
   data-markers="<%= @markers.to_json %>"
+  data-addr="<%= @addr_coordinates.to_json %>"
   data-mapbox-api-key="<%= ENV['MAPBOX_API_KEY'] %>"
 ></div>
-
-<!-- <script>
-
-  const checkbox_services = (checkbox) => {
-
-    // const mapElement = document.getElementById('map');
-    document.getElementById("map").reload(true);
-
-    if(checkbox.checked) {
-        // Checkbox is checked..
-        console.log(checkbox.value + " checked");
-    } else {
-        // Checkbox is not checked..
-        console.log(checkbox.value + " not checked");
-    }
-
-  };
-
-</script> -->

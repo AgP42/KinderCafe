@@ -1,23 +1,32 @@
 import mapboxgl from 'mapbox-gl';
 
 const mapElement = document.getElementById('map');
-const allMarkers = JSON.parse(mapElement.dataset.markers);
-
 const cb_change_table = document.getElementById('Change_table');
 const cb_baby_chair = document.getElementById('Baby_chair');
 const cb_playing_area = document.getElementById('Playing_area');
 const cb_toys = document.getElementById('Toys');
+
+const allMarkers = JSON.parse(mapElement.dataset.markers);
+const addr = JSON.parse(mapElement.dataset.addr);
+
+// define the center to the center of Berlin if no address or autolocation
+let center = [13.365783, 52.529846];
+// update if user address available
+if (addr !== null) {
+  center = [ addr.addr[1], addr.addr[0] ];
+}
 
 const buildMap = () => {
   mapboxgl.accessToken = mapElement.dataset.mapboxApiKey;
   return new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v10',
-    center: [13.365783, 52.529846],
+    center: center,
     zoom: 8
   });
 };
 
+// fct to add the places markers on the map
 const addMarkersToMap = (map, markers) => {
   markers.forEach((marker) => {
     const popup = new mapboxgl.Popup().setHTML(marker.infoWindow);
@@ -29,10 +38,19 @@ const addMarkersToMap = (map, markers) => {
   });
 };
 
+// fct to add the search address on the map (if existing)
+const addAddrMarkerToMap = (map, addr) => {
+    new mapboxgl.Marker({ "color": "#b40219" })
+      .setLngLat([ addr[0], addr[1] ])
+      // .setPopup(popup)
+      .addTo(map);
+
+};
+
 const fitMapToMarkers = (map, markers) => {
   const bounds = new mapboxgl.LngLatBounds();
   markers.forEach(marker => bounds.extend([ marker.lng, marker.lat ]));
-  map.fitBounds(bounds, { padding: 70, maxZoom: 12 });
+  map.fitBounds(bounds, { padding: 70, maxZoom: 14 });
 };
 
 const initMapboxWithCheckboxes = () => {
@@ -40,15 +58,10 @@ const initMapboxWithCheckboxes = () => {
   displayMapWithFilteredMarkers();
 };
 
+// fct called at init or each checkbox events
+// it display all markers (address filter done in the controller) if no checkbox checked
+// otherwise only the selected services are displayed
 const displayMapWithFilteredMarkers = () => {
-  // let cb_change_table_checked = cb_change_table.checked;
-  // const cb_change_table_id = cb_change_table.value;
-  // console.log(cb_change_table_id)
-
-  // let cb_baby_chair_checked = cb_baby_chair.checked;
-  // let cb_playing_area_checked = cb_playing_area.checked;
-  // let cb_toys_checked = cb_toys.checked;
-
 
   let checkedServicesIds = [];
   if (cb_change_table.checked) {
@@ -64,31 +77,26 @@ const displayMapWithFilteredMarkers = () => {
     checkedServicesIds.push(parseInt(cb_toys.value));
   }
 
-  console.log(checkedServicesIds)
-  console.log(allMarkers);
-
   let markers = [];
 
   if (checkedServicesIds.length == 0) {
     markers = allMarkers
   } else {
     markers = allMarkers.filter((marker) => {
-      console.log(marker.services);
-      console.log(marker.services.filter(service => checkedServicesIds.includes(service)));
-      console.log(marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length);
 
       return marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length;
     });
 
   }
 
-  console.log(markers);
-
-  // const markers = [markers[0], markers[5]];
   const map = buildMap();
+
   if (markers.length != 0){
     addMarkersToMap(map, markers);
     fitMapToMarkers(map, markers);
+  }
+  if (addr !== null) {
+    addAddrMarkerToMap(map, center);
   }
 };
 
@@ -109,7 +117,6 @@ const initCheckboxesListener = () => {
   cb_toys.onchange = () => {
     displayMapWithFilteredMarkers();
   };
-
 
 };
 

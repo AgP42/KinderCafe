@@ -6,6 +6,13 @@ const initAutocomplete = () => {
     places({ container: addressInput });
   }
 
+  navigator.geolocation.getCurrentPosition(function(position) {
+    // console.log(position.coords.latitude, position.coords.longitude);
+    const newURL = window.location.pathname + `?&lat=${position.coords.latitude}&long=${position.coords.longitude}`;
+    window.location = newURL;
+
+  });
+
 };
 
 export { initAutocomplete };
