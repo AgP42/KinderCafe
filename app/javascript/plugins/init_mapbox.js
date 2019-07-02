@@ -1,7 +1,12 @@
 import mapboxgl from 'mapbox-gl';
 
 const mapElement = document.getElementById('map');
-const markers = JSON.parse(mapElement.dataset.markers);
+const allMarkers = JSON.parse(mapElement.dataset.markers);
+
+const cb_change_table = document.getElementById('Change_table');
+const cb_baby_chair = document.getElementById('Baby_chair');
+const cb_playing_area = document.getElementById('Playing_area');
+const cb_toys = document.getElementById('Toys');
 
 const buildMap = () => {
   mapboxgl.accessToken = mapElement.dataset.mapboxApiKey;
@@ -30,38 +35,82 @@ const fitMapToMarkers = (map, markers) => {
   map.fitBounds(bounds, { padding: 70, maxZoom: 12 });
 };
 
-const initMapbox = () => {
-  if (mapElement) {
-    const map = buildMap();
+const initMapboxWithCheckboxes = () => {
+  initCheckboxesListener();
+  displayMapWithFilteredMarkers();
+};
+
+const displayMapWithFilteredMarkers = () => {
+  // let cb_change_table_checked = cb_change_table.checked;
+  // const cb_change_table_id = cb_change_table.value;
+  // console.log(cb_change_table_id)
+
+  // let cb_baby_chair_checked = cb_baby_chair.checked;
+  // let cb_playing_area_checked = cb_playing_area.checked;
+  // let cb_toys_checked = cb_toys.checked;
+
+
+  let checkedServicesIds = [];
+  if (cb_change_table.checked) {
+    checkedServicesIds.push(parseInt(cb_change_table.value));
+  }
+  if (cb_baby_chair.checked) {
+    checkedServicesIds.push(parseInt(cb_baby_chair.value));
+  }
+  if (cb_playing_area.checked) {
+    checkedServicesIds.push(parseInt(cb_playing_area.value));
+  }
+  if (cb_toys.checked) {
+    checkedServicesIds.push(parseInt(cb_toys.value));
+  }
+
+  console.log(checkedServicesIds)
+  console.log(allMarkers);
+
+  let markers = [];
+
+  if (checkedServicesIds.length == 0) {
+    markers = allMarkers
+  } else {
+    markers = allMarkers.filter((marker) => {
+      console.log(marker.services);
+      console.log(marker.services.filter(service => checkedServicesIds.includes(service)));
+      console.log(marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length);
+
+      return marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length;
+    });
+
+  }
+
+  console.log(markers);
+
+  // const markers = [markers[0], markers[5]];
+  const map = buildMap();
+  if (markers.length != 0){
     addMarkersToMap(map, markers);
     fitMapToMarkers(map, markers);
   }
-  initCheckboxes();
 };
 
-const initCheckboxes = () => {
-  const checkbox = document.getElementById('service_id_9');
+const initCheckboxesListener = () => {
 
-   // checkbox.addEventListener("change", console.log("hello"))
-
-  checkbox.onchange = (event) => {
-
-    const checkbox_checked = event.target.checked;
-
-    // console.log(event.target)
-    // console.log(event.target.checked)
-
-    if (checkbox_checked) {
-      console.log(event.target.value + " checked");
-      console.log(markers);
-      const new_marker = [markers[0], markers[5]];
-      const map = buildMap();
-      addMarkersToMap(map, new_marker);
-      fitMapToMarkers(map, new_marker);
-    }
-
-
+  cb_change_table.onchange = () => {
+    displayMapWithFilteredMarkers();
   };
+
+  cb_baby_chair.onchange = () => {
+    displayMapWithFilteredMarkers();
+  };
+
+  cb_playing_area.onchange = () => {
+    displayMapWithFilteredMarkers();
+  };
+
+  cb_toys.onchange = () => {
+    displayMapWithFilteredMarkers();
+  };
+
+
 };
 
-export { initMapbox };
+export { initMapboxWithCheckboxes };

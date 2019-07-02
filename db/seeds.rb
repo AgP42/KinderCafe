@@ -35,12 +35,24 @@ index = 0
 
 
   place = Place.new(name: Faker::Dessert.variety, address: address[index], comment: Faker::Marketing.buzzwords, user: User.last)
-  place.save
+  if place.valid?
+    place.save
+  else
+    puts "validation error for place #{place.name}"
+    puts place.errors.full_messages
+  end
 
   sleep(1.2) # for geocode API
 
   rand(1..3).times do
-    PlaceService.create!(place: place, service: Service.find(Service.first.id + rand(3)))
+    place_service = PlaceService.new(place: place, service: Service.find(Service.first.id + rand(3)))
+    if place_service.valid?
+      place_service.save
+    else
+      puts "validation error for place_service #{place_service.place.name} - #{place_service.service.name}"
+      puts place_service.errors.full_messages
+    end
+
   end
 
   index += 1

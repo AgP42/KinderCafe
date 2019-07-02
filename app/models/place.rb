@@ -4,7 +4,7 @@ class Place < ApplicationRecord
   has_many :place_services
   has_many :services, through: :place_services
 
-  validates :name, uniqueness: true, presence: true
+  validates :name, uniqueness: { case_sensitive: false }, presence: true
   validates :address, presence: true
 
   geocoded_by :address

@@ -34,7 +34,7 @@
 
           <%#= check_box_tag service.id %>
 
-          <%= check_box_tag("service_id[#{service.id}]",
+          <%= check_box_tag(service.name,
                        value = service.id,
                        checked = false,
                        # { disabled: false,

@@ -1,3 +1,8 @@
 <%= place.name %>
 <br>
 <%= place.address %>
+<br>
+
+<% place.services.each do |e| %>
+  <%= e.name %>
+<% end %>
