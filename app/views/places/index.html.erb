@@ -4,24 +4,18 @@
   <div class="container my-3 ">
     <%= form_tag places_path, method: :get do %>
       <div class="row", style="display:flex; justify-content: space-between; align-items:flex-end">
-        <div class="col-12 col-md-3">
-          <div class="mx-3">
+
             <!-- <p style="font-weight: 500">Address</p> -->
             <%= text_field_tag :addr,
               params[:addr],
-              class: "form-control",
+              class: "",
               id: "address",
-              style: "height: 48px; width: 300px;",
+              style: "",
               placeholder: @addr_name
             %>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-3">
             <%= submit_tag 'Search',
-              class: "searchbutton-navbar button-yellow btn btn-primary mr-3",
-              style: "height: 48px; border-radius: 4px;"%>
-        </div>
+              class: "",
+              style: ""%>
       </div>
     <% end %>
 
