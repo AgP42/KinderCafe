@@ -37,15 +37,7 @@ const fitMapToMarkers = (map, markers) => {
   map.fitBounds(bounds, { padding: 70, maxZoom: 14 });
 };
 
-
-// fct called at init or each checkbox events
-// it display all markers (address filter done in the controller) if no checkbox checked
-// otherwise only the selected services are displayed
-const displayMapWithFilteredMarkers = () => {
-  const mapElement = document.getElementById('map');
-
-  if (mapElement){
-
+const grabSelectedServices = () => {
     const cb_change_table = document.getElementById('Change_table');
     const cb_baby_chair = document.getElementById('Baby_chair');
     const cb_playing_area = document.getElementById('Playing_area');
@@ -65,8 +57,11 @@ const displayMapWithFilteredMarkers = () => {
       checkedServicesIds.push(parseInt(cb_toys.value));
     }
 
+    return checkedServicesIds;
+};
+
+const filterMarkersBySelectedServices = (mapElement, checkedServicesIds) => {
     const allMarkers = JSON.parse(mapElement.dataset.markers);
-    const addr = JSON.parse(mapElement.dataset.addr);
 
     let markers = [];
 
@@ -80,6 +75,10 @@ const displayMapWithFilteredMarkers = () => {
 
     }
 
+    return markers;
+};
+
+const defineMapCenter = (addr) => {
 
     // define the center to the center of Berlin if no address or autolocation
     let center = [13.365783, 52.529846];
@@ -87,6 +86,23 @@ const displayMapWithFilteredMarkers = () => {
     if (addr !== null) {
       center = [ addr.addr[1], addr.addr[0] ];
     }
+
+    return center;
+};
+
+// fct called at init or each checkbox events
+// it display all markers (address filter done in the controller) if no checkbox checked
+// otherwise only the selected services are displayed
+const displayMapWithFilteredMarkers = () => {
+  const mapElement = document.getElementById('map');
+
+  if (mapElement){
+
+    let checkedServicesIds = grabSelectedServices();
+    let markers = filterMarkersBySelectedServices(mapElement, checkedServicesIds);
+
+    const addr = JSON.parse(mapElement.dataset.addr);
+    let center = defineMapCenter(addr);
 
     const map = buildMap(mapElement, center);
 
