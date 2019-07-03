@@ -1,22 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 
-const mapElement = document.getElementById('map');
-const cb_change_table = document.getElementById('Change_table');
-const cb_baby_chair = document.getElementById('Baby_chair');
-const cb_playing_area = document.getElementById('Playing_area');
-const cb_toys = document.getElementById('Toys');
-
-const allMarkers = JSON.parse(mapElement.dataset.markers);
-const addr = JSON.parse(mapElement.dataset.addr);
-
-// define the center to the center of Berlin if no address or autolocation
-let center = [13.365783, 52.529846];
-// update if user address available
-if (addr !== null) {
-  center = [ addr.addr[1], addr.addr[0] ];
-}
-
-const buildMap = () => {
+const buildMap = (mapElement, center) => {
   mapboxgl.accessToken = mapElement.dataset.mapboxApiKey;
   return new mapboxgl.Map({
     container: 'map',
@@ -53,71 +37,104 @@ const fitMapToMarkers = (map, markers) => {
   map.fitBounds(bounds, { padding: 70, maxZoom: 14 });
 };
 
-const initMapboxWithCheckboxes = () => {
-  initCheckboxesListener();
-  displayMapWithFilteredMarkers();
-};
 
 // fct called at init or each checkbox events
 // it display all markers (address filter done in the controller) if no checkbox checked
 // otherwise only the selected services are displayed
 const displayMapWithFilteredMarkers = () => {
+  const mapElement = document.getElementById('map');
 
-  let checkedServicesIds = [];
-  if (cb_change_table.checked) {
-    checkedServicesIds.push(parseInt(cb_change_table.value));
-  }
-  if (cb_baby_chair.checked) {
-    checkedServicesIds.push(parseInt(cb_baby_chair.value));
-  }
-  if (cb_playing_area.checked) {
-    checkedServicesIds.push(parseInt(cb_playing_area.value));
-  }
-  if (cb_toys.checked) {
-    checkedServicesIds.push(parseInt(cb_toys.value));
-  }
+  if (mapElement){
 
-  let markers = [];
+    const cb_change_table = document.getElementById('Change_table');
+    const cb_baby_chair = document.getElementById('Baby_chair');
+    const cb_playing_area = document.getElementById('Playing_area');
+    const cb_toys = document.getElementById('Toys');
 
-  if (checkedServicesIds.length == 0) {
-    markers = allMarkers
-  } else {
-    markers = allMarkers.filter((marker) => {
+    let checkedServicesIds = [];
+    if (cb_change_table.checked) {
+      checkedServicesIds.push(parseInt(cb_change_table.value));
+    }
+    if (cb_baby_chair.checked) {
+      checkedServicesIds.push(parseInt(cb_baby_chair.value));
+    }
+    if (cb_playing_area.checked) {
+      checkedServicesIds.push(parseInt(cb_playing_area.value));
+    }
+    if (cb_toys.checked) {
+      checkedServicesIds.push(parseInt(cb_toys.value));
+    }
 
-      return marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length;
-    });
+    const allMarkers = JSON.parse(mapElement.dataset.markers);
+    const addr = JSON.parse(mapElement.dataset.addr);
 
-  }
+    let markers = [];
 
-  const map = buildMap();
+    if (checkedServicesIds.length == 0) {
+      markers = allMarkers
+    } else {
+      markers = allMarkers.filter((marker) => {
 
-  if (markers.length != 0){
-    addMarkersToMap(map, markers);
-    fitMapToMarkers(map, markers);
-  }
-  if (addr !== null) {
-    addAddrMarkerToMap(map, center);
+        return marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length;
+      });
+
+    }
+
+
+    // define the center to the center of Berlin if no address or autolocation
+    let center = [13.365783, 52.529846];
+    // update if user address available
+    if (addr !== null) {
+      center = [ addr.addr[1], addr.addr[0] ];
+    }
+
+    const map = buildMap(mapElement, center);
+
+    if (markers.length != 0){
+      addMarkersToMap(map, markers);
+      fitMapToMarkers(map, markers);
+    }
+    if (addr !== null) {
+      addAddrMarkerToMap(map, center);
+    }
   }
 };
 
 const initCheckboxesListener = () => {
 
-  cb_change_table.onchange = () => {
-    displayMapWithFilteredMarkers();
-  };
+  const cb_change_table = document.getElementById('Change_table');
+  if (cb_change_table) {
+    cb_change_table.onchange = () => {
+      displayMapWithFilteredMarkers();
+    };
+  }
 
-  cb_baby_chair.onchange = () => {
-    displayMapWithFilteredMarkers();
-  };
+  const cb_baby_chair = document.getElementById('Baby_chair');
+  if (cb_baby_chair) {
+    cb_baby_chair.onchange = () => {
+      displayMapWithFilteredMarkers();
+    };
+  }
 
-  cb_playing_area.onchange = () => {
-    displayMapWithFilteredMarkers();
-  };
+  const cb_playing_area = document.getElementById('Playing_area');
+  if (cb_playing_area) {
+    cb_playing_area.onchange = () => {
+      displayMapWithFilteredMarkers();
+    };
+  }
 
-  cb_toys.onchange = () => {
-    displayMapWithFilteredMarkers();
-  };
+  const cb_toys = document.getElementById('Toys');
+  if (cb_playing_area) {
+    cb_toys.onchange = () => {
+      displayMapWithFilteredMarkers();
+    };
+  }
 
+};
+
+const initMapboxWithCheckboxes = () => {
+  initCheckboxesListener();
+  displayMapWithFilteredMarkers();
 };
 
 export { initMapboxWithCheckboxes };

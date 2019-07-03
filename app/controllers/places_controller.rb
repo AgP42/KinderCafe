@@ -38,9 +38,20 @@ class PlacesController < ApplicationController
   end
 
   def new
+    @place = Place.new
+    # authorize @place
   end
 
   def create
+    @place = Place.new(place_params)
+    @place.user = current_user
+    # authorize @place
+    if @place.save
+      # redirect_to artwork_path(@place)
+      redirect_to places_path()
+    else
+      render :new
+    end
   end
 
   def edit
@@ -49,4 +60,19 @@ class PlacesController < ApplicationController
   def update
   end
 
+  private
+
+  def place_params
+    params.require(:place).permit(:name, :address, :image1, :image2, :image3, :image4, :gmap_link, :comment)
+  end
 end
+
+    # t.string "name"
+    # t.string "address"
+    # t.string "image1"
+    # t.string "image2"
+    # t.string "image3"
+    # t.string "image4"
+    # t.string "gmap_link"
+    # t.text "comment"
+    # t.bigint "user_id"
