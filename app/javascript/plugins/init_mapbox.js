@@ -42,6 +42,7 @@ const grabSelectedServices = () => {
     const cb_baby_chair = document.getElementById('Baby_chair');
     const cb_playing_area = document.getElementById('Playing_area');
     const cb_toys = document.getElementById('Toys');
+    const cb_spielplatz = document.getElementById('Public_Playing_area');
 
     let checkedServicesIds = [];
     if (cb_change_table.checked) {
@@ -56,7 +57,9 @@ const grabSelectedServices = () => {
     if (cb_toys.checked) {
       checkedServicesIds.push(parseInt(cb_toys.value));
     }
-
+    if (cb_spielplatz.checked) {
+      checkedServicesIds.push(parseInt(cb_spielplatz.value));
+    }
     return checkedServicesIds;
 };
 
@@ -142,6 +145,13 @@ const initCheckboxesListener = () => {
   const cb_toys = document.getElementById('Toys');
   if (cb_playing_area) {
     cb_toys.onchange = () => {
+      displayMapWithFilteredMarkers();
+    };
+  }
+
+  const cb_spielplatz = document.getElementById('Public_Playing_area');
+  if (cb_spielplatz) {
+    cb_spielplatz.onchange = () => {
       displayMapWithFilteredMarkers();
     };
   }

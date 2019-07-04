@@ -46,7 +46,7 @@ index = 0
   sleep(1.2) # for geocode API
 
   rand(2..5).times do
-    place_service = PlaceService.new(place: place, service: Service.find(Service.first.id + rand(4)))
+    place_service = PlaceService.new(place: place, service: Service.find(Service.first.id + rand(5)))
     if place_service.valid?
       place_service.save
     else
