@@ -1,3 +1,12 @@
+.highlight {
+    background: black !important;
+    transition: all 0.60s ease-in-out;
+    h2, p {
+      color: white !important;
+      transition: all 0.60s ease-in-out;
+    }
+}
+
 .card-artwork:hover {
   text-decoration: none;
 }
