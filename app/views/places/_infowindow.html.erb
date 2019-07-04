@@ -1,8 +1,10 @@
-<%= place.name %>
-<br>
-<%= place.address %>
-<br>
+<%= link_to place do%>
+  <%= place.name %>
+  <br>
+  <%= place.address %>
+  <br>
 
-<% place.services.each do |e| %>
-  <%= e.name %>
+  <% place.services.each do |e| %>
+    <%= e.name %>
+  <% end %>
 <% end %>

@@ -35,6 +35,17 @@ class PlacesController < ApplicationController
   end
 
   def show
+    @place = Place.find(params[:id])
+
+    @addr_marker = {
+      lat: @place.latitude,
+      lng: @place.longitude,
+      infoWindow: render_to_string(partial: "infowindow", locals: { place: @place })
+    }
+
+    # todo : keep url search criterias
+    # @search_date = params[:date]
+    @search_address = params[:addr]
   end
 
   def new

@@ -45,19 +45,19 @@ const grabSelectedServices = () => {
     const cb_spielplatz = document.getElementById('Public_Playing_area');
 
     let checkedServicesIds = [];
-    if (cb_change_table.checked) {
+    if (cb_change_table && cb_change_table.checked) {
       checkedServicesIds.push(parseInt(cb_change_table.value));
     }
-    if (cb_baby_chair.checked) {
+    if (cb_baby_chair && cb_baby_chair.checked) {
       checkedServicesIds.push(parseInt(cb_baby_chair.value));
     }
-    if (cb_playing_area.checked) {
+    if (cb_playing_area && cb_playing_area.checked) {
       checkedServicesIds.push(parseInt(cb_playing_area.value));
     }
-    if (cb_toys.checked) {
+    if (cb_toys && cb_toys.checked) {
       checkedServicesIds.push(parseInt(cb_toys.value));
     }
-    if (cb_spielplatz.checked) {
+    if (cb_spielplatz && cb_spielplatz.checked) {
       checkedServicesIds.push(parseInt(cb_spielplatz.value));
     }
     return checkedServicesIds;
