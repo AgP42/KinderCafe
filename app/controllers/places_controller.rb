@@ -68,8 +68,7 @@ class PlacesController < ApplicationController
           # end
         end
       end
-      # redirect_to artwork_path(@place)
-      redirect_to places_path() # todo : redirect to show page
+      redirect_to place_path(@place)
     else
       render :new
     end
@@ -84,8 +83,19 @@ class PlacesController < ApplicationController
     @place = Place.find(params[:id])
     # authorize @place
     if @place.update(place_params)
-      # redirect_to artwork_path(@place)
-      redirect_to places_path() # todo : redirect to show page
+        # loop to existing services of this place and destroy if not checked anymore
+        @place.services.each do |service|
+          place_service = PlaceService.where(place: @place).where(service: service).first
+          place_service.destroy unless params[:place][:service_ids].include?(service.id.to_s)
+        end
+
+        # loop to all checked services received and create service that not exists yet
+        params[:place][:service_ids].each do |service|
+        if service != ""
+          place_service = PlaceService.create!(place: @place, service: Service.find(service)) unless @place.services.include?(Service.find(service))
+        end
+      end
+      redirect_to place_path(@place)
     else
       render :edit
     end
