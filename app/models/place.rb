@@ -15,7 +15,4 @@ class Place < ApplicationRecord
   mount_uploader :image3, PhotoUploader
   mount_uploader :image4, PhotoUploader
 
-
-  # scope :rejects, -> { where(status: 'rejected') }
-
 end

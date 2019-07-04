@@ -3,6 +3,8 @@
     <!-- <img src='<%#= place.image1 %>'> -->
     <% if place.image1? %>
       <%= cl_image_tag place.image1, width: 450, height: 400, class: "place-img" %>
+    <% else %>
+      <%= image_tag "empty_cafe.png", class: "place-img" %>
     <% end %>
     <div class="card-trip-infos">
       <div>

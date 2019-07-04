@@ -48,3 +48,11 @@
   data-addr="<%= @addr_coordinates.to_json %>"
   data-mapbox-api-key="<%= ENV['MAPBOX_API_KEY'] %>"
 ></div>
+
+<div class="container">
+  <div class="row">
+    <div class="cards pb-5">
+        <%= render partial: 'card', collection: @places, as: :place %>
+    </div>
+  </div>
+</div>
