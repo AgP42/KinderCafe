@@ -39,7 +39,6 @@ class PlacesController < ApplicationController
 
   def new
     @place = Place.new
-    # @services = Service.all
     # authorize @place
   end
 
@@ -51,25 +50,34 @@ class PlacesController < ApplicationController
       params[:place][:service_ids].each do |service|
         if service != ""
           place_service = PlaceService.create!(place: @place, service: Service.find(service))
+          # if place_service.save
 
-          # unless place_service.save
-          #   puts "validation error for place_service #{place_service.place.name} - #{place_service.service.name}"
-          #   puts place_service.errors.full_messages
-          #   render :new
+          # else
+
           # end
         end
       end
       # redirect_to artwork_path(@place)
-      redirect_to places_path()
+      redirect_to places_path() # todo : redirect to show page
     else
       render :new
     end
   end
 
   def edit
+    @place = Place.find(params[:id])
+    # authorize @place
   end
 
   def update
+    @place = Place.find(params[:id])
+    # authorize @place
+    if @place.update(place_params)
+      # redirect_to artwork_path(@place)
+      redirect_to places_path() # todo : redirect to show page
+    else
+      render :edit
+    end
   end
 
   private
@@ -78,13 +86,3 @@ class PlacesController < ApplicationController
     params.require(:place).permit(:name, :address, :image1, :image2, :image3, :image4, :gmap_link, :comment)
   end
 end
-
-    # t.string "name"
-    # t.string "address"
-    # t.string "image1"
-    # t.string "image2"
-    # t.string "image3"
-    # t.string "image4"
-    # t.string "gmap_link"
-    # t.text "comment"
-    # t.bigint "user_id"
