@@ -12,15 +12,38 @@ const buildMap = (mapElement, center) => {
 
 // fct to add the places markers on the map
 const addMarkersToMap = (map, markers) => {
+
+  const mapMarkers = []
+
   markers.forEach((marker) => {
     const popup = new mapboxgl.Popup().setHTML(marker.infoWindow);
 
-    new mapboxgl.Marker()
+    const newMarker = new mapboxgl.Marker()
       .setLngLat([ marker.lng, marker.lat ])
       .setPopup(popup)
       .addTo(map);
+    mapMarkers.push(newMarker)
   });
+
+  openInfoWindow(mapMarkers);
 };
+
+// fct to allow marker interaction with cards just with mouseover
+const openInfoWindow = (markers) => {
+  // Select all cards
+  const cards = document.querySelectorAll('.card-trip');
+  cards.forEach((card, index) => {
+    // Put a microphone on each card listening for a mouseenter event
+    card.addEventListener('mouseenter', () => {
+      // Here we trigger the display of the corresponding marker infoWindow with the "togglePopup" function provided by mapbox-gl
+      markers[index].togglePopup();
+    });
+    // We also put a microphone listening for a mouseleave event to close the modal when user doesn't hover the card anymore
+    card.addEventListener('mouseleave', () => {
+      markers[index].togglePopup();
+    });
+  });
+}
 
 // fct to add the search address on the map (if existing)
 const addAddrMarkerToMap = (map, addr) => {
@@ -28,7 +51,6 @@ const addAddrMarkerToMap = (map, addr) => {
       .setLngLat([ addr[0], addr[1] ])
       // .setPopup(popup)
       .addTo(map);
-
 };
 
 const fitMapToMarkers = (map, markers) => {
