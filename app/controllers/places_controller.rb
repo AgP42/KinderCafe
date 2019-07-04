@@ -39,6 +39,7 @@ class PlacesController < ApplicationController
 
   def new
     @place = Place.new
+    # @services = Service.all
     # authorize @place
   end
 
@@ -47,6 +48,17 @@ class PlacesController < ApplicationController
     @place.user = current_user
     # authorize @place
     if @place.save
+      params[:place][:service_ids].each do |service|
+        if service != ""
+          place_service = PlaceService.create!(place: @place, service: Service.find(service))
+
+          # unless place_service.save
+          #   puts "validation error for place_service #{place_service.place.name} - #{place_service.service.name}"
+          #   puts place_service.errors.full_messages
+          #   render :new
+          # end
+        end
+      end
       # redirect_to artwork_path(@place)
       redirect_to places_path()
     else

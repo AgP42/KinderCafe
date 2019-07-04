@@ -8,6 +8,7 @@
           <%= simple_form_for(@place) do |f| %>
               <%= f.input :name %>
               <%= f.input :address %>
+              <%= f.association :services,   as: :check_boxes %>
               <%= f.input :image1 %>
               <%= f.input :image1_cache, as: :hidden %>
               <%= f.input :image2 %>

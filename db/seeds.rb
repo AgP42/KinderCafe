@@ -21,6 +21,7 @@ table = Service.create!(name: "Change table")
 chair = Service.create!(name: "Baby chair")
 play_area = Service.create!(name: "Playing area")
 toys = Service.create!(name: "Toys")
+public_spielplatz = Service.create!(name: "Public Playing area")
 
 puts 'Creating 12 Places with Services...'
 
@@ -44,8 +45,8 @@ index = 0
 
   sleep(1.2) # for geocode API
 
-  rand(1..3).times do
-    place_service = PlaceService.new(place: place, service: Service.find(Service.first.id + rand(3)))
+  rand(2..5).times do
+    place_service = PlaceService.new(place: place, service: Service.find(Service.first.id + rand(4)))
     if place_service.valid?
       place_service.save
     else
