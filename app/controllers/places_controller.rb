@@ -71,7 +71,7 @@ class PlacesController < ApplicationController
           # end
         end
       end
-      redirect_to place_path(@place)
+      redirect_to @place
     else
       render :new
     end
@@ -98,10 +98,18 @@ class PlacesController < ApplicationController
           place_service = PlaceService.create!(place: @place, service: Service.find(service)) unless @place.services.include?(Service.find(service))
         end
       end
-      redirect_to place_path(@place)
+      redirect_to @place
     else
       render :edit
     end
+  end
+
+  def destroy
+    @place = Place.find(params[:id])
+    authorize @place
+    @place.place_services.each { |e| e.destroy! } # destroy all associated services
+    @place.destroy! # destroy the place itself
+    redirect_to users_path
   end
 
   private

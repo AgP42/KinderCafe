@@ -4,4 +4,13 @@ class UserPolicy < ApplicationPolicy
       scope.all
     end
   end
+
+  def edit?
+    record.user == user || user.is_admin
+  end
+
+  def update?
+    edit?
+  end
+
 end

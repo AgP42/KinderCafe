@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root to: 'places#index'
 
-  resources :places, except: [:destroy]
+  resources :places
 
   resources :users, except: [:new, :create, :destroy]
 end
