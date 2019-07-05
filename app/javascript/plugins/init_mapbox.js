@@ -36,20 +36,32 @@ const addMarkersToMap = (map, markers) => {
 
 // fct to allow marker interaction with cards just with mouseover
 const openInfoWindow = (markers) => {
+
   // Select all cards
   const cards = document.querySelectorAll('.card-trip');
+
   cards.forEach((card, index) => {
-    // Put a microphone on each card listening for a mouseenter event
-    card.addEventListener('mouseenter', () => {
-      // Here we trigger the display of the corresponding marker infoWindow with the "togglePopup" function provided by mapbox-gl
-      markers[index].togglePopup();
-      // markers[index].remove();
-    });
-    // We also put a microphone listening for a mouseleave event to close the modal when user doesn't hover the card anymore
-    card.addEventListener('mouseleave', () => {
-      markers[index].togglePopup();
-    });
-  });
+
+    if (!card.aEventListenerExist) { // if an eventlistener has already been defined, we don't re-set it..., otherwise :
+
+      // search the marker associated to this card
+      const cardMarker = markers.filter(marker => marker._element.attributes["data-marker-id"].value == card.dataset.placeId)
+
+      if (cardMarker[0]) { // if it exist (don't know why but several issues without this check...)
+
+        // Put an EventListener on each card listening for a mouseenter event
+        card.addEventListener('mouseenter', () => {
+          // Here we trigger the display of the corresponding marker infoWindow with the "togglePopup" function provided by mapbox-gl
+          card.aaadEventListenerExist = true;
+          cardMarker[0].togglePopup();
+        });
+        // We also put an EventListener listening for a mouseleave event to close the modal when user doesn't hover the card anymore
+        card.addEventListener('mouseleave', () => {
+          cardMarker[0].togglePopup();
+        });
+      }
+    }
+  }); // end forEach card
 }
 
 // fct to allow card hightlight with map markers mouseover
