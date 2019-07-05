@@ -19,18 +19,19 @@ gem 'geocoder'
 gem 'cloudinary', '~> 1.9.1'
 gem 'carrierwave', '~> 1.2'
 gem 'pundit'
-gem 'faker'
-gem 'dotenv-rails'
 
-
-group :development do
+  gem 'faker'
+  gem 'dotenv-rails'
   gem 'web-console', '>= 3.3.0'
-end
 
-group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'listen', '~> 3.0.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+group :development do
+end
+
+group :development, :test do
 end
