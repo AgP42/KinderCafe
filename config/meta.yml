@@ -1,0 +1,7 @@
+# to be initialized on config/initializers/default_meta.rb
+
+meta_product_name: "Berlin mit Kinder"
+meta_title: "Berlin mit Kinder"
+meta_description: "Berlin mit Kinder allow you to find public or private places happy to welcome you with babies or children !"
+meta_image: "empty_cafe.png" # should exist in `app/assets/images/`
+twitter_account: "@product_twitter_account"   # required for Twitter Cards
