@@ -1,5 +1,5 @@
-<%= link_to place, class: "card-place" do %>
   <div class="card-trip" data-place-id="<%= place.id %>">
+<%= link_to place, class: "card-place" do %>
     <!-- <img src='<%#= place.image1 %>'> -->
     <% if place.image1? %>
       <%= cl_image_tag place.image1, width: 450, height: 400, class: "place-img" %>
@@ -16,5 +16,5 @@
       </div>
       <!-- <h2 class="card-trip-pricing" style="font-weight: 500"><%#= place.services.first.name %></h2> -->
     </div>
-  </div>
 <% end %>
+  </div>

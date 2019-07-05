@@ -105,15 +105,20 @@ const filterMarkersBySelectedServices = (mapElement, checkedServicesIds) => {
 
     let markers = [];
 
-    if (checkedServicesIds.length == 0) {
-      markers = allMarkers
-    } else {
-      markers = allMarkers.filter((marker) => {
+    markers = allMarkers.filter((marker, index) => {
+      const result = marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length;
 
-        return marker.services.filter(service => checkedServicesIds.includes(service)).length == checkedServicesIds.length;
-      });
+      const card = document.querySelector(`[data-place-id="${marker.id}"]`);
 
-    }
+      if (!result) // si result faux c'est qu'il ne faut pas les afficher
+      {
+        card.classList.add('disabled');
+      } else {
+        card.classList.remove('disabled');
+      }
+
+      return result
+    });
 
     return markers;
 };
