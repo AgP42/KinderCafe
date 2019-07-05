@@ -1,6 +1,7 @@
 class PlacesController < ApplicationController
 
   skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_after_action :verify_policy_scoped # => no pundit for index here
 
   def index
     search_radius = 2 # km
@@ -37,6 +38,7 @@ class PlacesController < ApplicationController
 
   def show
     @place = Place.find(params[:id])
+    authorize @place
 
     @addr_marker = {
       lat: @place.latitude,
@@ -51,13 +53,13 @@ class PlacesController < ApplicationController
 
   def new
     @place = Place.new
-    # authorize @place
+    authorize @place
   end
 
   def create
     @place = Place.new(place_params)
+    authorize @place
     @place.user = current_user
-    # authorize @place
     if @place.save
       params[:place][:service_ids].each do |service|
         if service != ""
@@ -77,12 +79,12 @@ class PlacesController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
-    # authorize @place
+    authorize @place
   end
 
   def update
     @place = Place.find(params[:id])
-    # authorize @place
+    authorize @place
     if @place.update(place_params)
         # loop to existing services of this place and destroy if not checked anymore
         @place.services.each do |service|
